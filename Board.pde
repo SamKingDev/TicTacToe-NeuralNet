@@ -16,37 +16,66 @@ class Board {
     int c = currentGo;
     switch (positionNumber) {
     case 0:
-      if ((spaces[1].team == c && spaces[2].team == c) || (spaces[3].team == c && spaces[6].team == c) || (spaces[4].team == c && spaces[8].team == c)) winner = c;
+      if ((spaces[1].team == c && spaces[2].team == c) || (spaces[3].team == c && spaces[6].team == c) || (spaces[4].team == c && spaces[8].team == c)){
+        winner = c;
+        return true;
+      }
       break;
     case 1:
-      if ((spaces[4].team == c && spaces[7].team == c) || (spaces[0].team == c && spaces[2].team == c));
+      if ((spaces[4].team == c && spaces[7].team == c) || (spaces[0].team == c && spaces[2].team == c)){
+        winner = c;
+        return true;
+      }
       break;
     case 2:
-      if ((spaces[1].team == c && spaces[0].team == c) || (spaces[4].team == c && spaces[6].team == c) || (spaces[5].team == c && spaces[8].team == c)) winner = c;
+      if ((spaces[1].team == c && spaces[0].team == c) || (spaces[4].team == c && spaces[6].team == c) || (spaces[5].team == c && spaces[8].team == c)){
+        winner = c;
+        return true;
+      }
       break;
     case 3:
-      if ((spaces[0].team == c && spaces[6].team == c) || (spaces[4].team == c && spaces[5].team == c)) winner = c;
+      if ((spaces[0].team == c && spaces[6].team == c) || (spaces[4].team == c && spaces[5].team == c)){
+        winner = c;
+        return true;
+      }
       break;
     case 4:
-      if ((spaces[0].team == c && spaces[8].team == c) || (spaces[1].team == c && spaces[7].team == c) || (spaces[2].team == c && spaces[6].team == c) || (spaces[5].team == c && spaces[3].team == c)) winner = c;
+      if ((spaces[0].team == c && spaces[8].team == c) || (spaces[1].team == c && spaces[7].team == c) || (spaces[2].team == c && spaces[6].team == c) || (spaces[5].team == c && spaces[3].team == c)){
+        winner = c;
+        return true;
+      }
       break;
     case 5:
-      if ((spaces[2].team == c && spaces[8].team == c) || (spaces[3].team == c && spaces[4].team == c)) winner = c;
+      if ((spaces[2].team == c && spaces[8].team == c) || (spaces[3].team == c && spaces[4].team == c)){
+        winner = c;
+        return true;
+      }
       break;
     case 6:
-      if ((spaces[0].team == c && spaces[3].team == c) || (spaces[4].team == c && spaces[2].team == c) || (spaces[7].team == c && spaces[8].team == c)) winner = c;
+      if ((spaces[0].team == c && spaces[3].team == c) || (spaces[4].team == c && spaces[2].team == c) || (spaces[7].team == c && spaces[8].team == c)){
+        winner = c;
+        return true;
+      }
       break;
     case 7:
-      if ((spaces[4].team == c && spaces[1].team == c) || (spaces[6].team == c && spaces[8].team == c)) winner = c;
+      if ((spaces[4].team == c && spaces[1].team == c) || (spaces[6].team == c && spaces[8].team == c)){
+        winner = c;
+        return true;
+      }
       break;
     case 8:
-      if ((spaces[6].team == c && spaces[7].team == c) || (spaces[0].team == c && spaces[4].team == c) || (spaces[2].team == c && spaces[5].team == c)) winner = c;
+      if ((spaces[6].team == c && spaces[7].team == c) || (spaces[0].team == c && spaces[4].team == c) || (spaces[2].team == c && spaces[5].team == c)){
+        winner = c;
+        return true;
+      }
       break;
     }
     return false;
   }
 
   void haveGo() {
+    player1.brain.drawGenome(15,400,350,200);
+    player2.brain.drawGenome(15,600,350,200);
     if (currentGo == 0) player1.steps++;
     else player2.steps++;
     float[] results;
@@ -105,41 +134,41 @@ class Board {
     PImage cross = loadImage("1.png");
     PImage nothing = loadImage("-1.png");
 
-    if (spaces[0].team == -1) image(nothing, 15, 55);
-    else if (spaces[0].team == 0) image(zero, 15, 55);
-    else if (spaces[0].team == 1) image(cross, 15, 55);
+    if (spaces[0].team == -1) image(nothing, 21, 56);
+    else if (spaces[0].team == 0) image(zero, 21, 56);
+    else if (spaces[0].team == 1) image(cross, 21, 56);
 
-    if (spaces[1].team == -1) image(nothing, 125, 55);
-    else if (spaces[1].team == 0) image(zero, 125, 55);
-    else if (spaces[1].team == 1) image(cross, 125, 55);
+    if (spaces[1].team == -1) image(nothing, 131, 56);
+    else if (spaces[1].team == 0) image(zero, 131, 56);
+    else if (spaces[1].team == 1) image(cross, 131, 56);
 
-    if (spaces[2].team == -1) image(nothing, 235, 55);
-    else if (spaces[2].team == 0) image(zero, 235, 55);
-    else if (spaces[2].team == 1) image(cross, 235, 55);
+    if (spaces[2].team == -1) image(nothing, 241, 56);
+    else if (spaces[2].team == 0) image(zero, 241, 56);
+    else if (spaces[2].team == 1) image(cross, 241, 56);
 
-    if (spaces[3].team == -1) image(nothing, 15, 165);
-    else if (spaces[3].team == 0) image(zero, 15, 165);
-    else if (spaces[3].team == 1) image(cross, 15, 165);
+    if (spaces[3].team == -1) image(nothing, 21, 165);
+    else if (spaces[3].team == 0) image(zero,21, 165);
+    else if (spaces[3].team == 1) image(cross, 21, 165);
 
-    if (spaces[4].team == -1) image(nothing, 125, 165);
-    else if (spaces[4].team == 0) image(zero, 125, 165);
-    else if (spaces[4].team == 1) image(cross, 125, 165);
+    if (spaces[4].team == -1) image(nothing, 131, 165);
+    else if (spaces[4].team == 0) image(zero, 131, 165);
+    else if (spaces[4].team == 1) image(cross, 131, 165);
 
-    if (spaces[5].team == -1) image(nothing, 235, 165);
-    else if (spaces[5].team == 0) image(zero, 235, 165);
-    else if (spaces[5].team == 1) image(cross, 235, 165);
+    if (spaces[5].team == -1) image(nothing, 241, 165);
+    else if (spaces[5].team == 0) image(zero, 241, 165);
+    else if (spaces[5].team == 1) image(cross, 241, 165);
 
-    if (spaces[6].team == -1) image(nothing, 15, 275);
-    else if (spaces[6].team == 0) image(zero, 15, 275);
-    else if (spaces[6].team == 1) image(cross, 15, 275);
+    if (spaces[6].team == -1) image(nothing, 21, 275);
+    else if (spaces[6].team == 0) image(zero, 21, 275);
+    else if (spaces[6].team == 1) image(cross, 21, 275);
 
-    if (spaces[7].team == -1) image(nothing, 125, 275);
-    else if (spaces[7].team == 0) image(zero, 125, 275);
-    else if (spaces[7].team == 1) image(cross, 125, 275);
+    if (spaces[7].team == -1) image(nothing, 131, 275);
+    else if (spaces[7].team == 0) image(zero, 131, 275);
+    else if (spaces[7].team == 1) image(cross, 131, 275);
 
-    if (spaces[8].team == -1) image(nothing, 235, 275);
-    else if (spaces[8].team == 0) image(zero, 235, 275);
-    else if (spaces[8].team == 1) image(cross, 235, 275);
+    if (spaces[8].team == -1) image(nothing, 241, 275);
+    else if (spaces[8].team == 0) image(zero, 241, 275);
+    else if (spaces[8].team == 1) image(cross, 241, 275);
   }
   public Player getPlayer1() {
     return player1;
