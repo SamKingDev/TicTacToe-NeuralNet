@@ -53,8 +53,8 @@ class Board {
     float max = 0;
     int maxIndex = 0;
 
-    if (currentGo == 0) results = player1.think();
-    else results = player2.think();
+    if (currentGo == 0) results = player1.think(spaces);
+    else results = player2.think(spaces);
 
     for (int i = 0; i < results.length; i++) {
       if (results[i] > max) {
@@ -62,18 +62,14 @@ class Board {
         maxIndex = i;
       }
     }
-    while(spaces[maxIndex].team != -1){
-
-    if (currentGo == 0) results = player1.think();
-    else results = player2.think();
+    if (currentGo == 0) results = player1.think(spaces);
+    else results = player2.think(spaces);
 
     for (int i = 0; i < results.length; i++) {
       if (results[i] > max) {
         max = results[i];
         maxIndex = i;
       }
-    }
-      
     }
     spaces[maxIndex].team = currentGo;
     checkIfWin(currentGo, maxIndex);

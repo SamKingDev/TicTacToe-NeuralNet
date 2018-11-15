@@ -4,7 +4,7 @@ class Player {
   boolean won = false;
   float steps = 0;
 
-  int genomeInputs = 27;
+  int genomeInputs = 9;
   int genomeOutputs = 9;
 
   float[] vision = new float[genomeInputs];
@@ -12,9 +12,13 @@ class Player {
 
   Player() {
     brain = new Genome(genomeInputs, genomeOutputs);
+    vision = new float[genomeInputs];
   }
 
-  float[] think() {
+  float[] think(Space[] spaces) {
+    for(int i = 0; i < spaces.length; i++){
+      vision[i] = spaces[i].team;
+    }
     return brain.feedForward(vision);
   }
   
