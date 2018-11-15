@@ -388,7 +388,7 @@ class Genome {
         nodePoses.add(new PVector(x, y));
         nodeNumbers.add(allNodes.get(i).get(j).number);
         if (i == layers -1) {
-          println(i, j, x, y);
+          //println(i, j, x, y);
         }
       }
     }
