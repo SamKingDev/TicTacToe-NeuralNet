@@ -47,7 +47,7 @@ class Board {
   }
 
   void haveGo() {
-    if(currentGo == 0) player1.steps++;
+    if (currentGo == 0) player1.steps++;
     else player2.steps++;
     float[] results;
     float max = 0;
@@ -62,19 +62,31 @@ class Board {
         maxIndex = i;
       }
     }
-    if (currentGo == 0) results = player1.think(spaces);
-    else results = player2.think(spaces);
-
-    for (int i = 0; i < results.length; i++) {
-      if (results[i] > max) {
-        max = results[i];
-        maxIndex = i;
+    if (spaces[maxIndex].team != -1) {
+      if (currentGo == 0) {
+        winner = 1;
+        player1.fitness = 0.1;
+        player1.won = true;
+        player2.fitness = -1;
+        player2.won = false;
+      }
+      else {
+        winner = 0;
+        player2.fitness = 0.1;
+        player2.won = true;
+        player1.fitness = -1;
+        player1.won = false;
+      }
+    } else {
+      spaces[maxIndex].team = currentGo;
+      if (checkIfWin(currentGo, maxIndex)) {
+        winnerFound();
       }
     }
-    spaces[maxIndex].team = currentGo;
-    checkIfWin(currentGo, maxIndex);
-    if (currentGo == 0) currentGo = 1;
-    else currentGo = 0;
+    if (winner == -1) {
+      if (currentGo == 0) currentGo = 1;
+      else currentGo = 0;
+    }
   }
   void winnerFound() {
     if (currentGo == 0) 
@@ -89,51 +101,50 @@ class Board {
     player2.calculateFitness();
   }
   void showGo() {
-     PImage zero = loadImage("0.png");
-     PImage cross = loadImage("1.png");
-     PImage nothing = loadImage("-1.png");
-     
-     if(spaces[0].team == -1) image(nothing, 15, 55);
-     else if(spaces[0].team == 0) image(zero, 15, 55);
-     else if(spaces[0].team == 1) image(cross, 15, 55);
-     
-     if(spaces[1].team == -1) image(nothing, 125, 55);
-     else if(spaces[1].team == 0) image(zero, 125, 55);
-     else if(spaces[1].team == 1) image(cross, 125, 55);
-     
-     if(spaces[2].team == -1) image(nothing, 235, 55);
-     else if(spaces[2].team == 0) image(zero, 235, 55);
-     else if(spaces[2].team == 1) image(cross, 235, 55);
-     
-     if(spaces[3].team == -1) image(nothing, 15, 165);
-     else if(spaces[3].team == 0) image(zero, 15, 165);
-     else if(spaces[3].team == 1) image(cross, 15, 165);
-     
-     if(spaces[4].team == -1) image(nothing, 125, 165);
-     else if(spaces[4].team == 0) image(zero, 125, 165);
-     else if(spaces[4].team == 1) image(cross, 125, 165);
-     
-     if(spaces[5].team == -1) image(nothing, 235, 165);
-     else if(spaces[5].team == 0) image(zero, 235, 165);
-     else if(spaces[5].team == 1) image(cross, 235, 165);
-     
-     if(spaces[6].team == -1) image(nothing, 15, 275);
-     else if(spaces[6].team == 0) image(zero, 15, 275);
-     else if(spaces[6].team == 1) image(cross, 15, 275);
+    PImage zero = loadImage("0.png");
+    PImage cross = loadImage("1.png");
+    PImage nothing = loadImage("-1.png");
 
-     if(spaces[7].team == -1) image(nothing, 125, 275);
-     else if(spaces[7].team == 0) image(zero, 125, 275);
-     else if(spaces[7].team == 1) image(cross, 125, 275);
-     
-     if(spaces[8].team == -1) image(nothing, 235, 275);
-     else if(spaces[8].team == 0) image(zero, 235, 275);
-     else if(spaces[8].team == 1) image(cross, 235, 275);
+    if (spaces[0].team == -1) image(nothing, 15, 55);
+    else if (spaces[0].team == 0) image(zero, 15, 55);
+    else if (spaces[0].team == 1) image(cross, 15, 55);
+
+    if (spaces[1].team == -1) image(nothing, 125, 55);
+    else if (spaces[1].team == 0) image(zero, 125, 55);
+    else if (spaces[1].team == 1) image(cross, 125, 55);
+
+    if (spaces[2].team == -1) image(nothing, 235, 55);
+    else if (spaces[2].team == 0) image(zero, 235, 55);
+    else if (spaces[2].team == 1) image(cross, 235, 55);
+
+    if (spaces[3].team == -1) image(nothing, 15, 165);
+    else if (spaces[3].team == 0) image(zero, 15, 165);
+    else if (spaces[3].team == 1) image(cross, 15, 165);
+
+    if (spaces[4].team == -1) image(nothing, 125, 165);
+    else if (spaces[4].team == 0) image(zero, 125, 165);
+    else if (spaces[4].team == 1) image(cross, 125, 165);
+
+    if (spaces[5].team == -1) image(nothing, 235, 165);
+    else if (spaces[5].team == 0) image(zero, 235, 165);
+    else if (spaces[5].team == 1) image(cross, 235, 165);
+
+    if (spaces[6].team == -1) image(nothing, 15, 275);
+    else if (spaces[6].team == 0) image(zero, 15, 275);
+    else if (spaces[6].team == 1) image(cross, 15, 275);
+
+    if (spaces[7].team == -1) image(nothing, 125, 275);
+    else if (spaces[7].team == 0) image(zero, 125, 275);
+    else if (spaces[7].team == 1) image(cross, 125, 275);
+
+    if (spaces[8].team == -1) image(nothing, 235, 275);
+    else if (spaces[8].team == 0) image(zero, 235, 275);
+    else if (spaces[8].team == 1) image(cross, 235, 275);
   }
-  public Player getPlayer1(){
-   return player1;
+  public Player getPlayer1() {
+    return player1;
   }
-  public Player getPlayer2(){
-   return player2;
+  public Player getPlayer2() {
+    return player2;
   }
-  
 }

@@ -32,7 +32,7 @@ class Player {
   
   void calculateFitness() {
     if (won == true) {
-      fitness = 10 * ((5 - steps)/10);
+      fitness = 10 * ((6 - steps)/10);
     }
     else if(won == false) fitness = 0;
   }

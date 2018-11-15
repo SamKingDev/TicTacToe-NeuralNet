@@ -37,7 +37,7 @@ class Population {
       genPlayers.add(board.getPlayer1());
       genPlayers.add(board.getPlayer2());
       board = null;
-      if(player1 > player2){
+      if (player1 > player2) {
         originalPlayers.remove(player1);
         originalPlayers.remove(player2);
       } else {
@@ -145,7 +145,7 @@ class Population {
     player1 = int(random(originalPlayers.size()));
     player2 = int(random(originalPlayers.size()));
     while (player1 == player2) {
-    player2 = int(random(originalPlayers.size()));
+      player2 = int(random(originalPlayers.size()));
     }
     board = new Board(originalPlayers.get(player1), originalPlayers.get(player2));
   }
