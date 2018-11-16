@@ -1,3 +1,3 @@
 class Space {
-  int team = -1; //Either team -1 for no team. 0 for O and 1 for X
+  int team = 0; //Either team 0 for no team. -1 for O and 1 for X
 }

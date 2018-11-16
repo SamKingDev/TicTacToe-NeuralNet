@@ -1,8 +1,10 @@
 class Player {
   float fitness;
   Genome brain;
-  boolean won = false;
-  float steps = 0;
+  float wins = 0;
+  float losses = 0;
+  float draws = 0;
+  float gamesPlayed = 0;
 
   int genomeInputs = 9;
   int genomeOutputs = 9;
@@ -15,9 +17,13 @@ class Player {
     vision = new float[genomeInputs];
   }
 
-  float[] think(Space[] spaces) {
+  float[] think(Space[] spaces, boolean isTeamCorrect) {
     for(int i = 0; i < spaces.length; i++){
-      vision[i] = spaces[i].team;
+      if(isTeamCorrect) vision[i] = spaces[i].team;
+      else{
+        if(spaces[i].team == -1) vision[i] = 1;
+        else if(spaces[i].team == 1) vision[i] = -1;
+      }
     }
     return brain.feedForward(vision);
   }
@@ -31,10 +37,7 @@ class Player {
   }
   
   void calculateFitness() {
-    if (won == true) {
-      fitness = 10 * ((6 - steps)/10);
-    }
-    else if(won == false) fitness = 0;
+    fitness = ((draws * 7.5) + (wins * 10) + (losses * -10)) / gamesPlayed;
   }
   
   Player crossover(Player parent2) {

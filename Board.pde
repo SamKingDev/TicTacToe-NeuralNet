@@ -2,9 +2,9 @@ class Board {
   Space[] spaces;
   Player player1;
   Player player2;
-  int currentGo = 0;
+  int currentGo = -1;
   int totalGoes = 0;
-  int winner = -1;
+  int winner = 0;
   Board(Player player1, Player player2) {
     spaces = new Space[9];
     for (int i = 0; i < spaces.length; i++) {
@@ -75,14 +75,11 @@ class Board {
   }
 
   void haveGo() {
-    if (currentGo == 0) player1.steps++;
-    else player2.steps++;
     float[] results;
-    float max = 0;
     int selectedSquare = 0;
     float highestValue = 0;
-    if (currentGo == 0) results = player1.think(spaces);
-    else results = player2.think(spaces);
+    if (currentGo == -1) results = player1.think(spaces, true);
+    else results = player2.think(spaces, false);
     boolean[] squareTested = new boolean[results.length];
     for (int i = 0; i < squareTested.length; i++) {
       squareTested[i] = false;
@@ -94,7 +91,7 @@ class Board {
       }
     }
     squareTested[selectedSquare] = true;
-    while (spaces[selectedSquare].team != -1) {
+    while (spaces[selectedSquare].team != 0) {
       selectedSquare = 0;
       highestValue = -1000;
       for (int i = 0; i < results.length; i++) {
@@ -110,28 +107,31 @@ class Board {
     if (checkIfWin(currentGo, selectedSquare)) {
       winnerFound();
     } else if (totalGoes == 9) {
-      player1.won=false;
-      player2.won=false;
-      player1.calculateFitness();
-      player2.calculateFitness();
+      player1.draws++;
+      player2.draws++;
+      player1.gamesPlayed++;
+      player2.gamesPlayed++;
+      winner = -2;
     }
 
-    if (winner == -1) {
-      if (currentGo == 0) currentGo = 1;
-      else currentGo = 0;
+    if (winner == 0) {
+      if (currentGo == -1) currentGo = 1;
+      else currentGo = -1;
     }
   }
   void winnerFound() {
-    if (currentGo == 0) 
+    if (currentGo == -1) 
     {
-      player1.won = true;
-      player2.won = false;
+      player1.wins++;
+      player2.losses++;
+      player1.gamesPlayed++;
+      player2.gamesPlayed++;
     } else {
-      player1.won = false;
-      player2.won = true;
+      player1.losses++;
+      player2.wins++;
+      player1.gamesPlayed++;
+      player2.gamesPlayed++;
     }
-    player1.calculateFitness();
-    player2.calculateFitness();
   }
   void showGo() {
     player1.brain.drawGenome(15, 400, 370, 260);
@@ -140,40 +140,40 @@ class Board {
     PImage cross = loadImage("1.png");
     PImage nothing = loadImage("-1.png");
 
-    if (spaces[0].team == -1) image(nothing, 21, 56);
-    else if (spaces[0].team == 0) image(zero, 21, 56);
+    if (spaces[0].team == 0) image(nothing, 21, 56);
+    else if (spaces[0].team == -1) image(zero, 21, 56);
     else if (spaces[0].team == 1) image(cross, 21, 56);
 
-    if (spaces[1].team == -1) image(nothing, 131, 56);
-    else if (spaces[1].team == 0) image(zero, 131, 56);
+    if (spaces[1].team == 0) image(nothing, 131, 56);
+    else if (spaces[1].team == -1) image(zero, 131, 56);
     else if (spaces[1].team == 1) image(cross, 131, 56);
 
-    if (spaces[2].team == -1) image(nothing, 241, 56);
-    else if (spaces[2].team == 0) image(zero, 241, 56);
+    if (spaces[2].team == 0) image(nothing, 241, 56);
+    else if (spaces[2].team == -1) image(zero, 241, 56);
     else if (spaces[2].team == 1) image(cross, 241, 56);
 
-    if (spaces[3].team == -1) image(nothing, 21, 165);
-    else if (spaces[3].team == 0) image(zero, 21, 165);
+    if (spaces[3].team == 0) image(nothing, 21, 165);
+    else if (spaces[3].team == -1) image(zero, 21, 165);
     else if (spaces[3].team == 1) image(cross, 21, 165);
 
-    if (spaces[4].team == -1) image(nothing, 131, 165);
-    else if (spaces[4].team == 0) image(zero, 131, 165);
+    if (spaces[4].team == 0) image(nothing, 131, 165);
+    else if (spaces[4].team == -1) image(zero, 131, 165);
     else if (spaces[4].team == 1) image(cross, 131, 165);
 
-    if (spaces[5].team == -1) image(nothing, 241, 165);
-    else if (spaces[5].team == 0) image(zero, 241, 165);
+    if (spaces[5].team == 0) image(nothing, 241, 165);
+    else if (spaces[5].team == -1) image(zero, 241, 165);
     else if (spaces[5].team == 1) image(cross, 241, 165);
 
-    if (spaces[6].team == -1) image(nothing, 21, 275);
-    else if (spaces[6].team == 0) image(zero, 21, 275);
+    if (spaces[6].team == 0) image(nothing, 21, 275);
+    else if (spaces[6].team == -1) image(zero, 21, 275);
     else if (spaces[6].team == 1) image(cross, 21, 275);
 
-    if (spaces[7].team == -1) image(nothing, 131, 275);
-    else if (spaces[7].team == 0) image(zero, 131, 275);
+    if (spaces[7].team == 0) image(nothing, 131, 275);
+    else if (spaces[7].team ==-1) image(zero, 131, 275);
     else if (spaces[7].team == 1) image(cross, 131, 275);
 
-    if (spaces[8].team == -1) image(nothing, 241, 275);
-    else if (spaces[8].team == 0) image(zero, 241, 275);
+    if (spaces[8].team == 0) image(nothing, 241, 275);
+    else if (spaces[8].team == -1) image(zero, 241, 275);
     else if (spaces[8].team == 1) image(cross, 241, 275);
   }
   public Player getPlayer1() {

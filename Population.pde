@@ -2,28 +2,25 @@ class Population {
   ArrayList<Player> originalPlayers = new ArrayList<Player>();
   int player1;
   int player2;
-  int bestScore = 0;
-  int gen = 0;
-  int boardNo = 0;
   ArrayList<ConnectionHistory> innovationHistory = new ArrayList<ConnectionHistory>();
   ArrayList<Player> genPlayers = new ArrayList<Player>();
   Board board;
   int totalPlayers;
   Player bestPlayer;//the best ever player 
-
-  boolean massExtinctionEven = false;
-  boolean newStage = false;
-  int populationLife = 0;
+  int currentPlayer = 0; //current player 
+  int currentPlaying = 0; //Who the current player is playing against
+  int generation = 0;
+  boolean isPlayer1 = true;
 
   Population(int size) {
     totalPlayers = size;
-    gen = 0;
     for (int i =0; i<size; i++) {
       originalPlayers.add(new Player());
       originalPlayers.get(i).brain.generateNetwork();
       originalPlayers.get(i).brain.mutate(innovationHistory);
     }
-    setRandomPlayers();
+    getNextPlayer();
+    board = new Board(originalPlayers.get(currentPlayer), originalPlayers.get(currentPlaying));
   }
 
   void showGo() {
@@ -31,39 +28,40 @@ class Population {
   }
 
   void performGo() {
-    gen++;
-    if (board.winner == -1) board.haveGo();
-    else {
-      genPlayers.add(board.getPlayer1());
-      genPlayers.add(board.getPlayer2());
-      board = null;
-      if (player1 > player2) {
-        originalPlayers.remove(player1);
-        originalPlayers.remove(player2);
-      } else {
-        originalPlayers.remove(player2);
-        originalPlayers.remove(player1);
-      }
-      if (originalPlayers.size() > 0) { //pick new players
-        boardNo++;
-        setRandomPlayers();
-      } else {
-        //Generate next generation and mutate
+    if (board.winner == 0) board.haveGo(); //If there isn't a winner have a go
+    else { //Else someone has won
+      if (!(currentPlayer == originalPlayers.size() - 2 && currentPlaying == originalPlayers.size() - 1)) { //If this generation isn't over
+        if (currentPlaying < originalPlayers.size() - 1) {
+          getNextPlayer();
+        } else {
+          currentPlaying = 0;
+          currentPlayer++;
+          getNextPlayer();
+        }
+        board = null;
+        board = new Board(originalPlayers.get(currentPlayer), originalPlayers.get(currentPlaying));
+      } else {//Generation is over
+        generation++;
+        for (int i = 0; i < originalPlayers.size(); i++) {
+          originalPlayers.get(i).calculateFitness();
+          genPlayers.add(originalPlayers.get(i));
+        }
+        originalPlayers.clear();
         naturalSelection();
-        setRandomPlayers();
-        genPlayers.clear();
+        currentPlaying = 0;
+        currentPlayer = 0;
+        getNextPlayer();
       }
     }
   }
 
   void naturalSelection() {
-    println(genPlayers.size());
     genPlayers = sortPlayers();
-    println(genPlayers.size());
     cullPlayers();
     originalPlayers.add(genPlayers.get(genPlayers.size() - 1).clone());
-    println("won : " + genPlayers.get(genPlayers.size() - 1).won);
-    println("steps : " + genPlayers.get(genPlayers.size() - 1).steps);
+    println("wins : " + genPlayers.get(genPlayers.size() - 1).wins);
+    println("draws : " + genPlayers.get(genPlayers.size() - 1).draws);
+    println("losses : " + genPlayers.get(genPlayers.size() - 1).losses);
     println("fitness : " + genPlayers.get(genPlayers.size() - 1).fitness);
     println();
     while (originalPlayers.size() < totalPlayers) {
@@ -72,7 +70,6 @@ class Population {
     for (int i = 0; i< originalPlayers.size(); i++) {//generate networks for each of the children
       originalPlayers.get(i).brain.generateNetwork();
     }
-    gen++;
   }
 
   Player giveMeBaby() {
@@ -148,5 +145,10 @@ class Population {
       player2 = int(random(originalPlayers.size()));
     }
     board = new Board(originalPlayers.get(player1), originalPlayers.get(player2));
+  }
+  void getNextPlayer() {
+    do {
+      currentPlaying++;
+    } while (currentPlayer == currentPlaying);
   }
 }
