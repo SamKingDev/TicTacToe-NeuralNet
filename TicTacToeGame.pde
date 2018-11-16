@@ -8,15 +8,14 @@ Population population;
 void setup() {
   size(400, 900);
   frameRate (movesPerSecond);
-  population = new Population(50);
+  population = new Population(300);
 }
 void draw() {
-  if(!hideAll){
-  background(255);
+  if (!hideAll) {
+    background(255);
   }
   population.performGo();
   if (showPopulation && !hideAll) {
-    line(0, 0, width, height);
     fill(0);
     rect(5, 40, 360, 15);
     rect(5, 40, 15, 360);
@@ -30,15 +29,16 @@ void draw() {
     rect(5, 265, 360, 10);
     population.showGo();
   }
-  if(!hideAll){
-  textSize(10);
-  textAlign(LEFT);
-  text("Moves Per Second : " + movesPerSecond, 0, 10);
-  text("Frame Rate : " + frameRate, 0, 20);
-  text("Current Player : " + population.currentPlayer, 0, 30);
-  text("Currently Playing : " + population.currentPlaying, 200, 10);
-  text("Generation : " + population.generation, 200, 20);
-  text("winner : " + population.board.winner, 200, 30);
+  if (!hideAll) {
+    textSize(10);
+    textAlign(LEFT);
+    text("Moves Per Second : " + movesPerSecond, 0, 10);
+    text("Frame Rate : " + frameRate, 0, 20);
+    text("Current Player : " + population.currentPlayer, 0, 30);
+    text("Currently Playing : " + population.currentPlaying, 200, 10);
+    text("Generation : " + population.generation, 200, 20);
+    text("winner : " + population.board.winner, 200, 30);
+    text("players Played : " + population.playersPlayed.size(), 200, 40);
   }
 }
 void keyPressed() {

@@ -11,6 +11,7 @@ class Population {
   int currentPlaying = 0; //Who the current player is playing against
   int generation = 0;
   boolean isPlayer1 = true;
+  ArrayList<Integer> playersPlayed = new ArrayList<Integer>();
 
   Population(int size) {
     totalPlayers = size;
@@ -30,16 +31,17 @@ class Population {
   void performGo() {
     if (board.winner == 0) board.haveGo(); //If there isn't a winner have a go
     else { //Else someone has won
-      if (!(currentPlayer == originalPlayers.size() - 2 && currentPlaying == originalPlayers.size() - 1)) { //If this generation isn't over
-        if (currentPlaying < originalPlayers.size() - 1) {
+      if (!(currentPlayer == originalPlayers.size() - 1 && playersPlayed.size() == 50)) { //If this generation isn't over
+        if (playersPlayed.size() < 50) {
           getNextPlayer();
         } else {
-          currentPlaying = 0;
+          playersPlayed.clear();
           currentPlayer++;
           getNextPlayer();
         }
         board = null;
-        board = new Board(originalPlayers.get(currentPlayer), originalPlayers.get(currentPlaying));
+        if(playersPlayed.size() > 25) board = new Board(originalPlayers.get(currentPlayer), originalPlayers.get(currentPlaying));
+        else  board = new Board(originalPlayers.get(currentPlaying), originalPlayers.get(currentPlayer));
       } else {//Generation is over
         generation++;
         for (int i = 0; i < originalPlayers.size(); i++) {
@@ -74,9 +76,9 @@ class Population {
 
   Player giveMeBaby() {
     Player baby;
-    if (random(1) < 0.25) {//25% of the time there is no crossover and the child is simply a clone of a random(ish) player
+    if (random(1) < 0.10) {//10% of the time there is no crossover and the child is simply a clone of a random(ish) player
       baby =  selectPlayer().clone();
-    } else {//75% of the time do crossover 
+    } else {//90% of the time do crossover 
 
       //get 2 random(ish) parents 
       Player parent1 = selectPlayer();
@@ -137,18 +139,21 @@ class Population {
     }
     return tmpPlayers;
   }
-
-  void setRandomPlayers() {
-    player1 = int(random(originalPlayers.size()));
-    player2 = int(random(originalPlayers.size()));
-    while (player1 == player2) {
-      player2 = int(random(originalPlayers.size()));
-    }
-    board = new Board(originalPlayers.get(player1), originalPlayers.get(player2));
-  }
+  
   void getNextPlayer() {
-    do {
-      currentPlaying++;
-    } while (currentPlayer == currentPlaying);
+    boolean playerFound = false;
+    while (!playerFound) {
+      boolean duplicate = false;
+      currentPlaying = int(random(originalPlayers.size() - 1));
+      if(currentPlaying != currentPlayer) {
+        if(playersPlayed.size() > 0){
+         for(int played : playersPlayed){
+           if(played == currentPlaying) duplicate = true;
+         }
+        } 
+         if(!duplicate) playerFound = true;
+      }
+    }
+    playersPlayed.add(currentPlaying);
   }
 }

@@ -228,14 +228,14 @@ class Genome {
         genes.get(i).mutateWeight();
       }
     }
-    //5% of the time add a new connection
+    //15% of the time add a new connection
     float rand2 = random(1);
-    if (rand2<0.08) {
+    if (rand2<0.15) {
       addConnection(innovationHistory);
     }
 
 
-    //1% of the time add a node
+    //2% of the time add a node
     float rand3 = random(1);
     if (rand3<0.02) {
       addNode(innovationHistory);
