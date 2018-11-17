@@ -31,7 +31,7 @@ class Population {
   void performGo() {
     if (board.winner == 0) board.haveGo(); //If there isn't a winner have a go
     else { //Else someone has won
-      if (!(currentPlayer == originalPlayers.size() - 1 && playersPlayed.size() == 50)) { //If this generation isn't over
+      if (!(currentPlayer == originalPlayers.size() - 2 && playersPlayed.size() == 50)) { //If this generation isn't over
         if (playersPlayed.size() < 50) {
           getNextPlayer();
         } else {
@@ -61,10 +61,11 @@ class Population {
     genPlayers = sortPlayers();
     cullPlayers();
     originalPlayers.add(genPlayers.get(genPlayers.size() - 1).clone());
-    println("wins : " + genPlayers.get(genPlayers.size() - 1).wins);
-    println("draws : " + genPlayers.get(genPlayers.size() - 1).draws);
-    println("losses : " + genPlayers.get(genPlayers.size() - 1).losses);
-    println("fitness : " + genPlayers.get(genPlayers.size() - 1).fitness);
+    println("Generation : " + generation);
+    println("Wins : " + genPlayers.get(genPlayers.size() - 1).wins);
+    println("Draws : " + genPlayers.get(genPlayers.size() - 1).draws);
+    println("Losses : " + genPlayers.get(genPlayers.size() - 1).losses);
+    println("Fitness : " + genPlayers.get(genPlayers.size() - 1).fitness);
     println();
     while (originalPlayers.size() < totalPlayers) {
       originalPlayers.add(giveMeBaby());
